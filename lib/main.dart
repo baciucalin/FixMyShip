@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shipmyfix/repair_shop_list.dart';
+import 'package:shipmyfix/repair_shop_list_route.dart';
 
 void main() => runApp(MyApp());
 
@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              RepairShopList(),
+              RepairShopListRoute(),
             ],
           ),
         ),
