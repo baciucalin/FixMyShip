@@ -11,21 +11,25 @@ class RepairShopList extends StatefulWidget {
   RepairShopListState createState() => new RepairShopListState();
 }
 
+enum SortBy { Name, Rating, Price }
+
 class RepairShopListState extends State<RepairShopList> {
   List<RepairShopDTO> repairShops;
   List<RepairShopDTO> repairShopsSearchResults;
   TextEditingController _textEditingController = new TextEditingController();
-
   Function onRepairShopClicked;
 
   RepairShopListState({this.repairShops, this.onRepairShopClicked});
+
+  SortBy _sortBy;
 
   @override
   void initState() {
     super.initState();
     repairShops = [];
     repairShopsSearchResults = [];
-    loadAsset(context);
+    _sortBy = SortBy.Name;
+    _loadAssets(context);
   }
 
   @override
@@ -56,32 +60,46 @@ class RepairShopListState extends State<RepairShopList> {
             ),
           ),
           Container(
-            height: 30,
+            height: 40,
             margin: EdgeInsets.only(bottom: 10),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Checkbox(
-                  checkColor: Colors.tealAccent,
-                  tristate: true,
+                Expanded(
+                  child: buildRadio('name', SortBy.Name),
                 ),
-                Checkbox(
-                  checkColor: Colors.tealAccent,
-                  tristate: true,
+                Expanded(
+                  child: buildRadio('rating', SortBy.Rating),
                 ),
-                Checkbox(
-                  checkColor: Colors.tealAccent,
-                  tristate: true,
-                )
+                Expanded(
+                  child: buildRadio('price', SortBy.Price),
+                ),
               ],
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.8,
+            height: MediaQuery.of(context).size.height * 0.7,
             child: _buildListOfShops(),
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildRadio(String title, SortBy sortByOptions) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(title),
+        Radio(
+          value: sortByOptions,
+          groupValue: _sortBy,
+          onChanged: (SortBy value) {
+            setState(() {
+              _sortBy = value;
+            });
+          },
+        ),
+      ],
     );
   }
 
@@ -94,19 +112,29 @@ class RepairShopListState extends State<RepairShopList> {
     }
 
     if (repairShopsSearchResults.isNotEmpty) {
-      return ListView.builder(
+      _sortRepairShops(repairShopsSearchResults);
+
+      return ListView.separated(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
         itemCount: repairShopsSearchResults.length,
+        separatorBuilder: (context, index) {
+          return Divider();
+        },
         itemBuilder: (context, index) {
           return RepairShopCard(repairShopsSearchResults[index]);
         },
       );
     } else {
-      return ListView.builder(
+      _sortRepairShops(repairShops);
+
+      return ListView.separated(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
         itemCount: repairShops.length,
+        separatorBuilder: (context, index) {
+          return Divider();
+        },
         itemBuilder: (context, index) {
           return RepairShopCard(repairShops[index]);
         },
@@ -114,7 +142,7 @@ class RepairShopListState extends State<RepairShopList> {
     }
   }
 
-  Future<List<RepairShopDTO>> loadAsset(BuildContext context) async {
+  _loadAssets(BuildContext context) async {
     String data = await rootBundle
         .loadString('assets/mock_data/repair_shops_mockJSON.json');
     var jsonResult = json.decode(data);
@@ -128,6 +156,24 @@ class RepairShopListState extends State<RepairShopList> {
       repairShops.add(RepairShopDTO.fromJson(item));
     });
     return repairShops;
+  }
+
+  _sortRepairShops(List<RepairShopDTO> list) {
+    switch (_sortBy) {
+      case SortBy.Name:
+        list.sort((a, b) {
+          return a.shopName.compareTo(b.shopName);
+        });
+        break;
+      case SortBy.Rating:
+        list.sort((b, a) {
+          return a.avgRating.compareTo(b.avgRating);
+        });
+        break;
+      case SortBy.Price:
+        // TODO: Handle this case.
+        break;
+    }
   }
 
   onSearchTextChanged(String txt) {
