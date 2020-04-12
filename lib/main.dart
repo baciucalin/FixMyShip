@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shipmyfix/repair_shop_list_route.dart';
+import 'package:shipmyfix/create_appointment_route.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,14 +25,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,8 +41,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'ADD',
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateAppointmentRoute()),
+          );
+        },
+        tooltip: 'Create Appointments',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

@@ -33,7 +33,7 @@ class RepairShopCard extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.all(6),
-                child: Icon(Icons.access_alarm),
+                child: Icon(Icons.local_shipping),
               ),
             ],
           ),
