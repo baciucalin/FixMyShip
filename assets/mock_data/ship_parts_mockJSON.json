@@ -1,0 +1,158 @@
+[
+  {
+    "_id": "5e9367ba11873db6cfca6204",
+    "index": 0,
+    "guid": "82336dc1-f2d9-466e-89d9-1a3354dc9084",
+    "name": "Engine Block",
+    "damagePercent": 0.7809,
+    "tags": [
+      "commodo",
+      "sit",
+      "esse",
+      "qui"
+    ]
+  },
+  {
+    "_id": "5e9367bad34ea7047d3bd7c2",
+    "index": 1,
+    "guid": "12d3ea57-f31e-4815-9d97-b63fc0fa9d8f",
+    "name": "Neutrino Tank",
+    "damagePercent": 0.7219,
+    "tags": [
+      "amet",
+      "aute",
+      "ea",
+      "magna"
+    ]
+  },
+  {
+    "_id": "5e9367baafa5053b9682823b",
+    "index": 2,
+    "guid": "6a416c6f-21b9-4847-b063-62287beb5339",
+    "name": "Cylinder Head",
+    "damagePercent": 0.1656,
+    "tags": [
+      "pariatur",
+      "nulla",
+      "non",
+      "nisi"
+    ]
+  },
+  {
+    "_id": "5e9367ba76ce372d99479e2c",
+    "index": 3,
+    "guid": "de83e5ff-6261-4638-a8d7-d089a93e19fe",
+    "name": "Camshaft",
+    "damagePercent": 0.9366,
+    "tags": [
+      "mollit",
+      "est",
+      "sit",
+      "occaecat"
+    ]
+  },
+  {
+    "_id": "5e9367ba41a068226aba7627",
+    "index": 4,
+    "guid": "8a2305cb-8374-4cf2-9bc5-4a3b007e12da",
+    "name": "Intake Valve",
+    "damagePercent": 0.2359,
+    "tags": [
+      "ad",
+      "amet",
+      "sunt",
+      "fugiat"
+    ]
+  },
+  {
+    "_id": "5e9367ba5381942a03cc56d6",
+    "index": 5,
+    "guid": "f054c089-459b-4791-bff1-a9890436e145",
+    "name": "Steering Joystick",
+    "damagePercent": 0.0285,
+    "tags": [
+      "commodo",
+      "proident",
+      "laborum",
+      "quis"
+    ]
+  },
+  {
+    "_id": "5e9367bac9abf7f4baa672b0",
+    "index": 6,
+    "guid": "6aaaac73-0059-4c8e-b491-e8bf4b9be36d",
+    "name": "Rocket Launcher",
+    "damagePercent": 0.0474,
+    "tags": [
+      "id",
+      "irure",
+      "veniam",
+      "dolor"
+    ]
+  },
+  {
+    "_id": "5e9367ba975936da4f804daf",
+    "index": 7,
+    "guid": "7b1cd238-2eac-4bc1-881b-f87b4ed13fcb",
+    "name": "Tail light",
+    "damagePercent": 0.8498,
+    "tags": [
+      "veniam",
+      "ad",
+      "est",
+      "aliqua"
+    ]
+  },
+  {
+    "_id": "5e9367ba49019f7e591d2e38",
+    "index": 8,
+    "guid": "3143f492-2275-41e1-b573-7a83538a93af",
+    "name": "Oil pan",
+    "damagePercent": 0.635,
+    "tags": [
+      "ipsum",
+      "tempor",
+      "elit",
+      "velit"
+    ]
+  },
+  {
+    "_id": "5e9367badc6267d65736e433",
+    "index": 9,
+    "guid": "c4c94465-d323-4919-b9be-6c8583223512",
+    "name": "Meteor shield",
+    "damagePercent": 0.7978,
+    "tags": [
+      "et",
+      "id",
+      "incididunt",
+      "eiusmod"
+    ]
+  },
+  {
+    "_id": "5e9367baffebc90642abf9f0",
+    "index": 10,
+    "guid": "e8e4ac6b-35b1-4e68-a9f8-65e6ffc24c37",
+    "name": "Windshield wiper",
+    "damagePercent": 0.1067,
+    "tags": [
+      "mollit",
+      "incididunt",
+      "ut",
+      "deserunt"
+    ]
+  },
+  {
+    "_id": "5e9367ba6aa173c5dce8afe8",
+    "index": 11,
+    "guid": "f6dbf37e-44c6-4d71-be5b-3c60de51e307",
+    "name": "Water capsule",
+    "damagePercent": 0.7745,
+    "tags": [
+      "pariatur",
+      "qui",
+      "ullamco",
+      "ea"
+    ]
+  }
+]
