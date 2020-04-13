@@ -1,9 +1,11 @@
 # shipmyfix
 Amendments:
+
 Implementation:
 - Add a global state management and dependency injection, like Provider.
 - Localization.
 - Generic components extraction.
+
 Features: 
 - owner should either have a default ship or choose from a list of ships before listing ship parts (would make it easier for repair shops to bid on a part that has more details)
 - sync with device calendar when picking a repair date (and after the shops bid) - to exclude certain dates
