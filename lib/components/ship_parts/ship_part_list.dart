@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:shipmyfix/ship_part_dto.dart';
+import 'package:shipmyfix/components/ship_parts/model/ship_part_dto.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class ShipPartList {

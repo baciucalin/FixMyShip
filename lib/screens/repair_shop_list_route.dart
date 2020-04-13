@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shipmyfix/repair_shop_card.dart';
-import 'package:shipmyfix/repair_shop_dto.dart';
-import 'package:shipmyfix/repair_shop_list.dart';
+import 'package:shipmyfix/components/repair_shops/repair_shop_card.dart';
+import 'package:shipmyfix/components/repair_shops/model/repair_shop_dto.dart';
+import 'package:shipmyfix/components/repair_shops/repair_shop_list.dart';
 import 'package:shipmyfix/search_widget.dart';
 
 enum SortBy { Name, Rating, Price }
@@ -13,7 +13,7 @@ class RepairShopListRoute extends StatefulWidget {
 
 class RepairShopListRouteState extends State<RepairShopListRoute> {
   Future<List<RepairShopDTO>> _repairShopsResponse;
-  List<RepairShopDTO> repairShops;
+  List<RepairShopDTO> _repairShops;
   List<RepairShopDTO> repairShopsSearchResults;
 
   TextEditingController _textEditingController = new TextEditingController();
@@ -58,7 +58,7 @@ class RepairShopListRouteState extends State<RepairShopListRoute> {
               future: _repairShopsResponse,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  repairShops = snapshot.data;
+                  _repairShops = snapshot.data;
                   return _buildListOfShops();
                 }
                 return CircularProgressIndicator();
@@ -111,17 +111,17 @@ class RepairShopListRouteState extends State<RepairShopListRoute> {
         },
       );
     } else {
-      _sortRepairShops(repairShops);
+      _sortRepairShops(_repairShops);
 
       return ListView.separated(
         padding: const EdgeInsets.all(8.0),
         shrinkWrap: true,
-        itemCount: repairShops.length,
+        itemCount: _repairShops.length,
         separatorBuilder: (context, index) {
           return Divider();
         },
         itemBuilder: (context, index) {
-          return RepairShopCard(repairShops[index]);
+          return RepairShopCard(_repairShops[index]);
         },
       );
     }
@@ -152,7 +152,7 @@ class RepairShopListRouteState extends State<RepairShopListRoute> {
       return;
     }
 
-    repairShops.forEach((item) {
+    _repairShops.forEach((item) {
       if (item.shopName.toLowerCase().contains(txt.toLowerCase()))
         repairShopsSearchResults.add(item);
     });

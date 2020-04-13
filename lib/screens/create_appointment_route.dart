@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:shipmyfix/search_widget.dart';
-import 'package:shipmyfix/ship_part_card.dart';
-import 'package:shipmyfix/ship_part_dto.dart';
-import 'package:shipmyfix/ship_part_list.dart';
+import 'package:shipmyfix/components/ship_parts/ship_part_card.dart';
+import 'package:shipmyfix/components/ship_parts/model/ship_part_dto.dart';
+import 'package:shipmyfix/components/ship_parts/ship_part_list.dart';
+
+const kLastStep = 1; //this could be extracted in a constants file
 
 class CreateAppointmentRoute extends StatefulWidget {
   @override
@@ -12,9 +14,10 @@ class CreateAppointmentRoute extends StatefulWidget {
 
 class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
   int _currentStepIndex = 0;
+  String _chosenTime;
 
   Future<List<ShipPartDTO>> _shipPartsResponse;
-  List<ShipPartDTO> shipParts;
+  List<ShipPartDTO> _shipParts;
   List<ShipPartDTO> shipPartsSearchResults;
 
   @override
@@ -40,9 +43,11 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
                 steps: _buildListOfSteps(),
                 currentStep: _currentStepIndex,
                 onStepTapped: (index) {
-                  setState(() {
-                    _currentStepIndex = index;
-                  });
+                  if (_validateStep()) {
+                    setState(() {
+                      _currentStepIndex = index;
+                    });
+                  }
                 },
                 onStepCancel: () {
                   _previousStep();
@@ -89,9 +94,8 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
     );
   }
 
-  String _chosenTime;
-
-  _buildClockWidget(BuildContext context) {
+  _buildDateTimePickerWidget(BuildContext context) {
+    //todo: can be moved to another file not for bloating this one and for readability
     return Container(
       child: Center(
         child: RaisedButton(
@@ -131,7 +135,7 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
     }
 
     setState(() {
-      shipParts.forEach((item) {
+      _shipParts.forEach((item) {
         if (item.partName.toLowerCase().contains(txt.toLowerCase()))
           shipPartsSearchResults.add(item);
       });
@@ -150,7 +154,7 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
               future: _shipPartsResponse,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  shipParts = snapshot.data;
+                  _shipParts = snapshot.data;
                   return _buildListOfParts();
                 }
                 return CircularProgressIndicator();
@@ -163,6 +167,8 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
   }
 
   Widget _buildListOfParts() {
+    //todo: this can be extracted into a separate component that would act as a factory for a generic listview
+    //todo with search capabilities;
     if (_textEditingController.text.isNotEmpty &&
         shipPartsSearchResults.isEmpty) {
       return Container(
@@ -186,12 +192,12 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
       return ListView.separated(
         padding: const EdgeInsets.all(3.0),
         shrinkWrap: true,
-        itemCount: shipParts.length,
+        itemCount: _shipParts.length,
         separatorBuilder: (context, index) {
           return Divider();
         },
         itemBuilder: (context, index) {
-          return ShipPartCard(shipParts[index]);
+          return ShipPartCard(_shipParts[index]);
         },
       );
     }
@@ -210,16 +216,25 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
         title: _currentStepIndex == 1 ? Text('Pick a date!') : Text(''),
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.6,
-          child: _buildClockWidget(context),
+          child: _buildDateTimePickerWidget(context),
         ),
       ),
     ];
   }
 
   _nextStep() {
-    setState(() {
-      _currentStepIndex++;
-    });
+    if (_validateStep()) {
+      setState(() {
+        if (_currentStepIndex != kLastStep) {
+          //last step
+          _currentStepIndex++;
+        } else {
+          //todo create appointment:
+          //todo this can be implemented using the Provider package, so it would be visible across the widget tree
+          //todo then Navigator.pop()
+        }
+      });
+    }
   }
 
   _previousStep() {
@@ -230,5 +245,11 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
     setState(() {
       _currentStepIndex--;
     });
+  }
+
+  bool _validateStep() {
+    return (_shipParts.where((i) => i.shipPartCounter >= 1).length > 0) ||
+        (shipPartsSearchResults.where((i) => i.shipPartCounter >= 1).length >
+            0);
   }
 }

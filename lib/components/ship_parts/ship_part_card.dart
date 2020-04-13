@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_counter/flutter_counter.dart';
-import 'package:shipmyfix/ship_part_dto.dart';
+import 'package:shipmyfix/components/ship_parts/model/ship_part_dto.dart';
 
 class ShipPartCard extends StatefulWidget {
   final ShipPartDTO shipPart;
 
-  const ShipPartCard(this.shipPart);
+  ShipPartCard(this.shipPart);
 
   @override
   ShipPartCardState createState() => ShipPartCardState();

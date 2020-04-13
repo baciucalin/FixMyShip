@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shipmyfix/repair_shop_list_route.dart';
-import 'package:shipmyfix/create_appointment_route.dart';
+import 'package:shipmyfix/screens/repair_shop_list_route.dart';
+import 'package:shipmyfix/screens/create_appointment_route.dart';
 
 void main() => runApp(MyApp());
 

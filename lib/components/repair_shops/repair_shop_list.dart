@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:shipmyfix/repair_shop_dto.dart';
+import 'package:shipmyfix/components/repair_shops/model/repair_shop_dto.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class RepairShopList {
