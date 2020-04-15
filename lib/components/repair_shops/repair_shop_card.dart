@@ -22,7 +22,7 @@ class RepairShopCard extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text(repairShop.shopName),
+                Text(repairShop.name),
                 Text(
                     'Rating: ${repairShop.avgRating.toStringAsFixed(2)} (${repairShop.noOfReviews})'),
               ],

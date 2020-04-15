@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:shipmyfix/search_widget.dart';
-import 'package:shipmyfix/components/ship_parts/ship_part_card.dart';
 import 'package:shipmyfix/components/ship_parts/model/ship_part_dto.dart';
 import 'package:shipmyfix/components/ship_parts/ship_part_list.dart';
+import 'package:shipmyfix/searchable_listview.dart';
 
 const kLastStep = 1; //this could be extracted in a constants file
 
@@ -19,6 +19,8 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
   Future<List<ShipPartDTO>> _shipPartsResponse;
   List<ShipPartDTO> _shipParts;
   List<ShipPartDTO> shipPartsSearchResults;
+
+  TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -94,6 +96,25 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
     );
   }
 
+  List<Step> _buildListOfSteps() {
+    return [
+      Step(
+        title: _currentStepIndex == 0 ? Text('Choose the part(s)') : Text(''),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.6,
+          child: _buildListOfPartsWidget(),
+        ),
+      ),
+      Step(
+        title: _currentStepIndex == 1 ? Text('Pick a date!') : Text(''),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.6,
+          child: _buildDateTimePickerWidget(context),
+        ),
+      ),
+    ];
+  }
+
   _buildDateTimePickerWidget(BuildContext context) {
     //todo: can be moved to another file not for bloating this one and for readability
     return Container(
@@ -125,23 +146,6 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
     );
   }
 
-  TextEditingController _textEditingController = TextEditingController();
-
-  _onSearchTextChanged(String txt) {
-    shipPartsSearchResults.clear();
-    if (txt.isEmpty) {
-      setState(() {});
-      return;
-    }
-
-    setState(() {
-      _shipParts.forEach((item) {
-        if (item.partName.toLowerCase().contains(txt.toLowerCase()))
-          shipPartsSearchResults.add(item);
-      });
-    });
-  }
-
   _buildListOfPartsWidget() {
     return SingleChildScrollView(
       child: Column(
@@ -155,7 +159,8 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   _shipParts = snapshot.data;
-                  return _buildListOfParts();
+                  return SearchableListView(_shipParts, _textEditingController,
+                      ListCardType.SHIP_PART);
                 }
                 return CircularProgressIndicator();
               },
@@ -164,62 +169,6 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
         ],
       ),
     );
-  }
-
-  Widget _buildListOfParts() {
-    //todo: this can be extracted into a separate component that would act as a factory for a generic listview
-    //todo with search capabilities;
-    if (_textEditingController.text.isNotEmpty &&
-        shipPartsSearchResults.isEmpty) {
-      return Container(
-        child: Text('No ship parts that match your search term found.'),
-      );
-    }
-
-    if (shipPartsSearchResults.isNotEmpty) {
-      return ListView.separated(
-        padding: const EdgeInsets.all(3.0),
-        shrinkWrap: true,
-        itemCount: shipPartsSearchResults.length,
-        separatorBuilder: (context, index) {
-          return Divider();
-        },
-        itemBuilder: (context, index) {
-          return ShipPartCard(shipPartsSearchResults[index]);
-        },
-      );
-    } else {
-      return ListView.separated(
-        padding: const EdgeInsets.all(3.0),
-        shrinkWrap: true,
-        itemCount: _shipParts.length,
-        separatorBuilder: (context, index) {
-          return Divider();
-        },
-        itemBuilder: (context, index) {
-          return ShipPartCard(_shipParts[index]);
-        },
-      );
-    }
-  }
-
-  List<Step> _buildListOfSteps() {
-    return [
-      Step(
-        title: _currentStepIndex == 0 ? Text('Choose the part(s)') : Text(''),
-        content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.6,
-          child: _buildListOfPartsWidget(),
-        ),
-      ),
-      Step(
-        title: _currentStepIndex == 1 ? Text('Pick a date!') : Text(''),
-        content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.6,
-          child: _buildDateTimePickerWidget(context),
-        ),
-      ),
-    ];
   }
 
   _nextStep() {
@@ -251,5 +200,9 @@ class _CreateAppointmentRouteState extends State<CreateAppointmentRoute> {
     return (_shipParts.where((i) => i.shipPartCounter >= 1).length > 0) ||
         (shipPartsSearchResults.where((i) => i.shipPartCounter >= 1).length >
             0);
+  }
+
+  _onSearchTextChanged(String txt) {
+    setState(() {});
   }
 }

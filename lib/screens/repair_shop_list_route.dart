@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shipmyfix/components/repair_shops/repair_shop_card.dart';
 import 'package:shipmyfix/components/repair_shops/model/repair_shop_dto.dart';
 import 'package:shipmyfix/components/repair_shops/repair_shop_list.dart';
 import 'package:shipmyfix/search_widget.dart';
+import 'package:shipmyfix/searchable_listview.dart';
 
 enum SortBy { Name, Rating, Price }
 
@@ -59,7 +59,11 @@ class RepairShopListRouteState extends State<RepairShopListRoute> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   _repairShops = snapshot.data;
-                  return _buildListOfShops();
+                  return SearchableListView(
+                      _repairShops,
+                      _textEditingController,
+                      ListCardType.REPAIR_SHOP,
+                      _sortRepairShops(_repairShops));
                 }
                 return CircularProgressIndicator();
               },
@@ -88,50 +92,11 @@ class RepairShopListRouteState extends State<RepairShopListRoute> {
     );
   }
 
-  Widget _buildListOfShops() {
-    if (_textEditingController.text.isNotEmpty &&
-        repairShopsSearchResults.isEmpty) {
-      return Container(
-        child: Text('No repair shops that match your search term found.'),
-      );
-    }
-
-    if (repairShopsSearchResults.isNotEmpty) {
-      _sortRepairShops(repairShopsSearchResults);
-
-      return ListView.separated(
-        padding: const EdgeInsets.all(8.0),
-        shrinkWrap: true,
-        itemCount: repairShopsSearchResults.length,
-        separatorBuilder: (context, index) {
-          return Divider();
-        },
-        itemBuilder: (context, index) {
-          return RepairShopCard(repairShopsSearchResults[index]);
-        },
-      );
-    } else {
-      _sortRepairShops(_repairShops);
-
-      return ListView.separated(
-        padding: const EdgeInsets.all(8.0),
-        shrinkWrap: true,
-        itemCount: _repairShops.length,
-        separatorBuilder: (context, index) {
-          return Divider();
-        },
-        itemBuilder: (context, index) {
-          return RepairShopCard(_repairShops[index]);
-        },
-      );
-    }
-  }
-
   _sortRepairShops(List<RepairShopDTO> list) {
     switch (_sortBy) {
       case SortBy.Name:
         list.sort((a, b) {
-          return a.shopName.compareTo(b.shopName);
+          return a.name.compareTo(b.name);
         });
         break;
       case SortBy.Rating:
@@ -146,17 +111,6 @@ class RepairShopListRouteState extends State<RepairShopListRoute> {
   }
 
   _onSearchTextChanged(String txt) {
-    repairShopsSearchResults.clear();
-    if (txt.isEmpty) {
-      setState(() {});
-      return;
-    }
-
-    _repairShops.forEach((item) {
-      if (item.shopName.toLowerCase().contains(txt.toLowerCase()))
-        repairShopsSearchResults.add(item);
-    });
-
     setState(() {});
   }
 }

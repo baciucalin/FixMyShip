@@ -31,7 +31,7 @@ class ShipPartCardState extends State<ShipPartCard> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: Text(widget.shipPart.partName),
+              child: Text(widget.shipPart.name),
             ),
             Counter(
               initialValue: widget.shipPart.shipPartCounter,
